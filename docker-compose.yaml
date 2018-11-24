@@ -1,0 +1,33 @@
+version: '3.7'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./.docker/app/Dockerfile
+    volumes:
+      - .:/myapp:cached
+      - bundle:/usr/local/bundle
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    tty: true
+    environment:
+      - COLUMNS="${COLUMNS:-}"
+      - LINES="${LINES:-}"
+      - TERM="${TERM:-}"
+      - MYSQL_HOST=db
+
+  db:
+    image: mysql:5.7
+    volumes:
+      - data:/var/lib/mysql
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_DATABASE=hello-rails-on-eks_development
+    ports:
+      - "${EXTERNAL_MYSQL_PORT:-3306}:3306"
+
+volumes:
+  data:
+  bundle:
