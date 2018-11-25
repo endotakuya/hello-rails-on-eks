@@ -12,7 +12,7 @@
 ## 大まかな作業手順
 
 公式ドキュメントに沿って進めます。  
-`ステップ 4: ゲストブックアプリケーションを起動する` の手前までは、同じ作業でOKです。  
+`ステップ 4: ゲストブックアプリケーションを起動する` の手前までは同じ作業でOKです。  
 https://docs.aws.amazon.com/ja_jp/eks/latest/userguide/getting-started.html
 
 1. Amazon EKS サービスロールの作成
