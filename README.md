@@ -1,24 +1,45 @@
-# README
+# EKSでRailsアプリケーションを動かすサンプルリポジトリ
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## 事前準備
 
-Things you may want to cover:
+1. Railsアプリケーションの作成
+2. Dockernize
+3. 必要なコマンド類のインストール
+    - aws cli（あった方が楽）
+    - kubectl
+    - kubectx（クラスタの変更が容易になる）
 
-* Ruby version
+## 大まかな作業手順
 
-* System dependencies
+公式ドキュメントに沿って進めます。  
+`ステップ 4: ゲストブックアプリケーションを起動する` の手前までは、同じ作業でOKです。  
+https://docs.aws.amazon.com/ja_jp/eks/latest/userguide/getting-started.html
 
-* Configuration
+1. Amazon EKS サービスロールの作成
+2. Amazon EKS クラスター VPC の作成
+3. Amazon EKS ワーカーノードの起動 & 設定
+4. Rails アプリケーションのデプロイ
 
-* Database creation
+※ EKS は、現在東京リージョンが使えない。ので、バージニア北部を使用。
 
-* Database initialization
+## Rails アプリケーションのデプロイ
 
-* How to run the test suite
+### Docker イメージを Dockerhub へ Push
 
-* Services (job queues, cache servers, search engines, etc.)
+```bash
+$ docker login
+$ docker image build -t enta0701/hello-rails:v1 -f .docker/app/Dockerfile .
+$ docker image push enta0701/hello-rails:v1
+```
 
-* Deployment instructions
+### デプロイ
 
-* ...
+```bash
+$ ku apply -f .k8s/hello-rails.yaml
+```
+
+### 削除
+
+```
+$ ku delete -f .k8s/hello-rails.yaml
+```
