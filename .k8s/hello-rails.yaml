@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-rails
+  labels:
+    app: hello-rails
+spec:
+  replicas: 2
+  selector:
+      matchLabels:
+        app: hello-rails
+  template:
+    metadata:
+      labels:
+        app: hello-rails
+    spec:
+      containers:
+      - name: app
+        image: enta0701/hello-rails:v1
+        ports:
+        - containerPort: 3000
+        args:
+        - bash
+        - -c
+        - rails db:migrate &&
+          rails s -b 0.0.0.0
+        env:
+        - name: MYSQL_HOST
+          value: 127.0.0.1
+      - name: db
+        image: mysql:5.7
+        ports:
+        - containerPort: 3306
+        env:
+        - name: MYSQL_ALLOW_EMPTY_PASSWORD
+          value: 'yes'
+        - name: MYSQL_DATABASE
+          value: hello-rails-on-eks_development
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-rails
+  labels:
+    app: hello-rails
+spec:
+  type: LoadBalancer
+  selector:
+    app: hello-rails
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 3000
