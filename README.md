@@ -35,11 +35,13 @@ $ docker image push enta0701/hello-rails:v1
 ### デプロイ
 
 ```bash
-$ ku apply -f .k8s/hello-rails.yaml
+# 環境変数展開
+$ envsubst < .k8s/hello-rails.yaml | kubectl apply -f -
 ```
 
 ### 削除
 
-```
-$ ku delete -f .k8s/hello-rails.yaml
+```bash
+# 環境変数展開
+$ envsubst < .k8s/hello-rails.yaml | kubectl delete -f -
 ```
