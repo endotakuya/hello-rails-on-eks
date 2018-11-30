@@ -16,7 +16,10 @@ spec:
     spec:
       containers:
       - name: app
-        image: enta0701/hello-rails:v1
+        # EKS
+        image: ${AWS_ECR_REPOSITORY_URI}/hello-rails:v1
+        # GKE
+        # image: gcr.io/${PROJECT_ID}/hello-rails:v1
         ports:
         - containerPort: 3000
         args:
